@@ -88,7 +88,7 @@ fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
-        (sqrt(sqr(x2 - x1)+sqr(y2-y1)))
+        sqrt(sqr(x2 - x1)+sqr(y2 - y1))
 
 /**
  * Простая
@@ -97,7 +97,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
 fun thirdDigit(number: Int): Int =
-        ((number / 100) % 10)
+        number / 100 % 10
 
 /**
  * Простая
@@ -117,7 +117,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double =
-        (initial * pow((1 +percent/100.0), 3.0))
+        initial * pow((1 +percent/100.0), 3.0)
 
 
 /**
@@ -127,5 +127,5 @@ fun accountInThreeYears(initial: Int, percent: Int): Double =
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int =
-        ((number / 100)) + (((number % 100) / 10) * 10) + ((number % 10) * 100)
+        (number / 100) + (((number % 100) / 10) * 10) + ((number % 10) * 100)
 

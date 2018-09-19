@@ -85,12 +85,18 @@ fun ageDescription(age: Int): String =
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double =
-        if ((((v1 * t1) + (v2 * t2) + (v3 * t3))/2) <= (t1 * v1))
-            (((v1 * t1) + (v2 * t2) + (v3 * t3))/2.0)/v1
-        else if (((((v1 * t1) + (v2 * t2) + (v3 * t3))/2) > (t1 * v1)) && ((((v1 * t1) + (v2 * t2) + (v3 * t3))/2) <= ((t1 * v1) + (t2+v2))))
-                t1 + (((((v1 * t1) + (v2 * t2) + (v3 * t3))/2.0) - (v1 * t1)) /v2)
-            else t1 + t2 + (((((v1 * t1) + (v2 * t2) + (v3 * t3))/2.0) - (v1 * t1) - (v2 * t2))) /v3
+                   t3: Double, v3: Double): Double {
+    val s1 = v1 * t1
+    val s2 = v2 * t2
+    val s3 = v3 * t3
+    val hway = (s1 + s2 + s3) / 2
+    return when {
+        hway < s1 -> hway / v1
+        hway in (s1..s1 + s2) -> t1 + ((hway - s1) / v2)
+        else -> t1 + t2 + ((hway - s1 - s2) / v3)
+    }
+}
+
 
 
 
@@ -151,15 +157,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
             -1
         else if ((sqr(a) + sqr(b) == sqr(c)) || (sqr(b) + sqr(c) == sqr(a)) || (sqr(a) + sqr(c) == sqr(b)))
                 1
-            else if ((a >= b) && (a >= c))
+            else if (maxOf( a, b , c) == a)
                     if (sqr(a) < (sqr(b) + sqr(c)))
                          0
                     else 2
-            else if ((c >= b) && (c >= a))
+            else if (maxOf( a, b , c) == c)
                              if (sqr(c) < (sqr(b) + sqr(a)))
                                 0
                              else 2
-                         else if ((b >= c) && (b >= a))
+                         else if (maxOf( a, b , c) == b)
                                 if (sqr(b) < (sqr(c) + sqr(a)))
                                      0
                                 else 2

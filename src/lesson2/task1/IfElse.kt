@@ -157,15 +157,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
             -1
         else if ((sqr(a) + sqr(b) == sqr(c)) || (sqr(b) + sqr(c) == sqr(a)) || (sqr(a) + sqr(c) == sqr(b)))
                 1
-            else if (maxOf( a, b , c) == a)
+            else if (maxOf(a ,b  ,c ) == a)
                     if (sqr(a) < (sqr(b) + sqr(c)))
                          0
                     else 2
-            else if (maxOf( a, b , c) == c)
+            else if (maxOf(a ,b  ,c ) == c)
                              if (sqr(c) < (sqr(b) + sqr(a)))
                                 0
                              else 2
-                         else if (maxOf( a, b , c) == b)
+                         else if (maxOf(a ,b  ,c ) == b)
                                 if (sqr(b) < (sqr(c) + sqr(a)))
                                      0
                                 else 2

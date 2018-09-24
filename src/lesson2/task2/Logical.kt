@@ -56,7 +56,7 @@ fun daysInMonth(month: Int, year: Int): Int =
             7 -> 31
             8 -> 31
             9 -> 30
-            10 -> 10
+            10 -> 31
             11 -> 30
             12 -> 31
             else -> -1

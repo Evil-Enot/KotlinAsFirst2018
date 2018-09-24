@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -67,13 +68,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String =
         if ((age == 11) || (age == 111))
             "$age лет"
-            else if (age % 10 == 1)
-                    "$age год"
-                else if ((age % 10 in 5..9) || (age % 10 == 0) || (age % 100 in 5..20))
-                    "$age лет"
-                    else if (age % 10 in 2..4)
-                         "$age года"
-                        else "0"
+        else if (age % 10 == 1)
+            "$age год"
+        else if ((age % 10 in 5..9) || (age % 10 == 0) || (age % 100 in 5..20))
+            "$age лет"
+        else if (age % 10 in 2..4)
+            "$age года"
+        else "0"
 
 
 /**
@@ -98,11 +99,6 @@ fun timeForHalfWay(t1: Double, v1: Double,
 }
 
 
-
-
-
-
-
 /**
  * Простая
  *
@@ -115,15 +111,15 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int =
-        if (((rookX1 != kingX)) &&((rookY1 != kingY)) && ((rookX2 != kingX)) &&((rookY2 != kingY)))
+        if (((rookX1 != kingX)) && ((rookY1 != kingY)) && ((rookX2 != kingX)) && ((rookY2 != kingY)))
             0
         else if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)))
-                  3
-            else if ((rookX2 == kingX) || (rookY2 == kingY))
-                     2
-                else 1
+            3
+        else if ((rookX2 == kingX) || (rookY2 == kingY))
+            2
+        else 1
 
-        /**
+/**
  * Простая
  *
  * На шахматной доске стоят черный король и белые ладья и слон
@@ -136,13 +132,13 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int =
-                if (((rookX != kingX)) && ((rookY != kingY)) && ((abs(kingX - bishopX)) !=(abs(kingY - bishopY))))
-                            0
-                else if (((rookX == kingX) || (rookY == kingY)) && ((abs(kingX - bishopX)) ==(abs(kingY - bishopY))))
-                         3
-                     else if (((rookX == kingX) || (rookY == kingY)))
-                              1
-                          else 2
+        if (((rookX != kingX)) && ((rookY != kingY)) && ((abs(kingX - bishopX)) != (abs(kingY - bishopY))))
+            0
+        else if (((rookX == kingX) || (rookY == kingY)) && ((abs(kingX - bishopX)) == (abs(kingY - bishopY))))
+            3
+        else if (((rookX == kingX) || (rookY == kingY)))
+            1
+        else 2
 
 /**
  * Простая
@@ -156,20 +152,20 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
         if ((a + b < c) || (a + c < b) || (b + c < a))
             -1
         else if ((sqr(a) + sqr(b) == sqr(c)) || (sqr(b) + sqr(c) == sqr(a)) || (sqr(a) + sqr(c) == sqr(b)))
-                1
-            else if (maxOf(a ,b  ,c ) == a)
-                    if (sqr(a) < (sqr(b) + sqr(c)))
-                         0
-                    else 2
-            else if (maxOf(a ,b  ,c ) == c)
-                             if (sqr(c) < (sqr(b) + sqr(a)))
-                                0
-                             else 2
-                         else if (maxOf(a ,b  ,c ) == b)
-                                if (sqr(b) < (sqr(c) + sqr(a)))
-                                     0
-                                else 2
-                             else -1
+            1
+        else if (maxOf(a, b, c) == a)
+            if (sqr(a) < (sqr(b) + sqr(c)))
+                0
+            else 2
+        else if (maxOf(a, b, c) == c)
+            if (sqr(c) < (sqr(b) + sqr(a)))
+                0
+            else 2
+        else if (maxOf(a, b, c) == b)
+            if (sqr(b) < (sqr(c) + sqr(a)))
+                0
+            else 2
+        else -1
 
 
 /**
@@ -180,15 +176,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int=
-         if (b < c || d <a)
-          -1
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+        if (b < c || d < a)
+            -1
         else if (a <= c && b <= d)
-                abs(c - b)
-             else if (c <= a && d <= b)
-                     abs(a - d)
-                  else if (a < c && d< b)
-                          abs(d - c)
-                       else if (c < a && b < d)
-                               abs(b - a)
-                            else -1
+            abs(b - c)
+        else if (c <= a && d <= b)
+            abs(a - d)
+        else if (a < c && d < b)
+            d - c
+        else if (c < a && b < d)
+            b - a
+        else -1

@@ -45,23 +45,13 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  */
 fun daysInMonth(month: Int, year: Int): Int =
         when (month) {
-            1 -> 31
-            2 -> {
+            1, 3, 5, 7, 8, 10, 12 -> 31
+            4, 6, 9, 11 -> 30
+            else -> {
                 if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0))
                     29
                 else 28
             }
-            3 -> 31
-            4 -> 30
-            5 -> 31
-            6 -> 30
-            7 -> 31
-            8 -> 31
-            9 -> 30
-            10 -> 31
-            11 -> 30
-            12 -> 31
-            else -> -1
         }
 
 /**
@@ -86,21 +76,21 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    var mindl = 0
-    var middl = 0
+    var mindlina = 0
+    var middlina = 0
     if (maxOf(a, b, c) == a) {
-        mindl = min(b, c)
-        middl = max(b, c)
+        mindlina = min(b, c)
+        middlina = max(b, c)
     }
     if (maxOf(a, b, c) == b) {
-        mindl = min(a, c)
-        middl = max(a, c)
+        mindlina = min(a, c)
+        middlina = max(a, c)
     }
     if (maxOf(a, b, c) == c) {
-        mindl = min(b, a)
-        middl = max(b, a)
+        mindlina = min(b, a)
+        middlina = max(b, a)
     }
-    return !(mindl > min(s, r) || (middl > max(s, r)))
+    return !(mindlina > min(s, r) || (middlina > max(s, r)))
 
 }
 

@@ -131,7 +131,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int =
+                          bishopX: Int, bishopY: Int) =
         if (((rookX != kingX)) && ((rookY != kingY)) && ((abs(kingX - bishopX)) != (abs(kingY - bishopY))))
             0
         else if (((rookX == kingX) || (rookY == kingY)) && ((abs(kingX - bishopX)) == (abs(kingY - bishopY))))
@@ -180,9 +180,9 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
         if (b < c || d < a)
             -1
         else if (a <= c && b <= d)
-            abs(b - c)
+            b - c
         else if (c <= a && d <= b)
-            abs(a - d)
+            d - a
         else if (a < c && d < b)
             d - c
         else if (c < a && b < d)

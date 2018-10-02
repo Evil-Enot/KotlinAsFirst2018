@@ -76,21 +76,21 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    var mindlina = 0
-    var middlina = 0
+    var minLength = 0
+    var medLength = 0
     if (maxOf(a, b, c) == a) {
-        mindlina = min(b, c)
-        middlina = max(b, c)
+        minLength = min(b, c)
+        medLength = max(b, c)
     }
     if (maxOf(a, b, c) == b) {
-        mindlina = min(a, c)
-        middlina = max(a, c)
+        minLength = min(a, c)
+        medLength = max(a, c)
     }
     if (maxOf(a, b, c) == c) {
-        mindlina = min(b, a)
-        middlina = max(b, a)
+        minLength = min(b, a)
+        medLength = max(b, a)
     }
-    return !(mindlina > min(s, r) || (middlina > max(s, r)))
+    return !(minLength > min(s, r) || (medLength > max(s, r)))
 
 }
 

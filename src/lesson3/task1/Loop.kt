@@ -74,11 +74,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
-    do {
-        count++
+    while (number > 0) {
         number /= 10
-    } while (number > 0)
-    return count
+        count++
+    }
+    if (count == 0)
+        return 1
+    else
+        return count
 }
 
 /**
@@ -244,15 +247,10 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var count = 0
+    val count: Int = digitNumber(n)
     var lastNumber: Int
-    var number = n
     var number1 = n
     var number2 = 0.0
-    while (number > 0) {
-        number /= 10
-        count++
-    }
     var count2 = count - 1
     for (i in 1..count) {
         lastNumber = number1 % 10
@@ -315,7 +313,7 @@ fun squareSequenceDigit(n: Int): Int {
         digit = count * count
     }
     number -= n
-    for (i in 0..number){
+    for (i in 0..number) {
         answer = digit % 10
         digit /= 10
     }
@@ -332,7 +330,7 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int{
+fun fibSequenceDigit(n: Int): Int {
     var count = 0
     var number = 0
     var digit = 0
@@ -343,7 +341,7 @@ fun fibSequenceDigit(n: Int): Int{
         digit = fib(count)
     }
     number -= n
-    for (i in 0..number){
+    for (i in 0..number) {
         answer = digit % 10
         digit /= 10
     }

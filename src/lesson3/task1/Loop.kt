@@ -74,14 +74,11 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
-    while (number != 0) {
+    do {
         number /= 10
         count++
-    }
-    if (count == 0)
-        return 1
-    else
-        return count
+    } while (number != 0)
+    return count
 }
 
 /**
@@ -110,16 +107,9 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var numberm = m
-    var numbern = n
-    while (numberm != numbern) {
-        if (numberm > numbern)
-            numberm -= numbern
-        else numbern -= numberm
-    }
-    return n * m / numberm
-}
+fun lcm(m: Int, n: Int): Int =
+        n * m / NOD(m, n)
+
 
 /**
  * Простая
@@ -143,10 +133,11 @@ fun minDivisor(n: Int): Int {
 fun maxDivisor(n: Int): Int {
     val number = n / 2
     var del = 1
-    for (i in 2..number) {
-        if (n % i == 0)
+    for (i in number downTo 2) {
+        if (n % i == 0) {
             del = i
-        else del
+            break
+        }
     }
     return del
 }
@@ -158,17 +149,8 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var numberm = m
-    var numbern = n
-    while ((numberm != numbern) && (numbern > 1)) {
-        if (numberm > numbern)
-            numberm -= numbern
-        else numbern -= numberm
-    }
-    return numbern <= 1
-
-}
+fun isCoPrime(m: Int, n: Int): Boolean =
+        NOD(m, n) <= 1
 
 /**
  * Простая
@@ -179,16 +161,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * */
 
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var number = 0
-    for (i in m..n) {
-        if (sqrt(i.toDouble()) % 1 == 0.0) {
-            number = 1
-            break
-        } else number = 0
-    }
-    return number == 1
+    for (i in m..n)
+        if (sqrt(i.toDouble()) % 1 == 0.0)
+            return true
+    return false
 }
-
 
 /**
  * Средняя
@@ -210,13 +187,11 @@ fun collatzSteps(x: Int): Int {
     var count = 0
     var number = x
     while (number != 1) {
-        if (number % 2 == 0) {
-            number = number / 2
-            count++
-        } else {
+        if (number % 2 == 0)
+            number /= 2
+        else
             number = 3 * number + 1
-            count++
-        }
+        count++
     }
     return count
 }
@@ -306,18 +281,13 @@ fun squareSequenceDigit(n: Int): Int {
     var count = 0
     var number = 0
     var digit = 0
-    var answer = 0
     while (number < n) {
         count++
         number += digitNumber(count * count)
         digit = count * count
     }
     number -= n
-    for (i in 0..number) {
-        answer = digit % 10
-        digit /= 10
-    }
-    return answer
+    return (digit / Math.pow(10.0, number.toDouble()).toInt()) % 10
 }
 
 
@@ -334,16 +304,22 @@ fun fibSequenceDigit(n: Int): Int {
     var count = 0
     var number = 0
     var digit = 0
-    var answer = 0
     while (number < n) {
         count++
         number += digitNumber(fib(count))
         digit = fib(count)
     }
     number -= n
-    for (i in 0..number) {
-        answer = digit % 10
-        digit /= 10
+    return (digit / Math.pow(10.0, number.toDouble()).toInt()) % 10
+}
+
+fun NOD(m: Int, n: Int): Int {
+    var numberm = m
+    var numbern = n
+    while ((numberm != numbern) && (numbern > 1)) {
+        if (numberm > numbern)
+            numberm -= numbern
+        else numbern -= numberm
     }
-    return answer
+    return numbern
 }

@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -132,14 +133,10 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     val number = n / 2
-    var del = 1
-    for (i in number downTo 2) {
-        if (n % i == 0) {
-            del = i
-            break
-        }
-    }
-    return del
+    for (i in number downTo 2)
+        if (n % i == 0)
+            return i
+    return 1
 }
 
 /**
@@ -161,9 +158,14 @@ fun isCoPrime(m: Int, n: Int): Boolean =
  * */
 
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in m..n)
-        if (sqrt(i.toDouble()) % 1 == 0.0)
-            return true
+    if ((m == 1) && (n == 1))
+        return true
+    else
+        for (i in sqrt(m.toDouble()).toInt()..sqrt(n.toDouble()).toInt())
+            if (sqrt(m.toDouble()).toInt() == sqrt(n.toDouble()).toInt())
+                return ((sqr(i) <= n) && (sqr(i) >= m))
+            else
+                return (sqr(i) < n)
     return false
 }
 
@@ -225,15 +227,17 @@ fun revert(n: Int): Int {
     val count: Int = digitNumber(n)
     var lastNumber: Int
     var number1 = n
-    var number2 = 0.0
+    var number2 = 0
     var count2 = count - 1
+    var st = 1
     for (i in 1..count) {
-        lastNumber = number1 % 10
-        number2 += Math.pow(10.0, count2.toDouble()) * lastNumber
+        lastNumber = number1 / Math.pow(10.0, count2.toDouble()).toInt()
+        number1 %= Math.pow(10.0, count2.toDouble()).toInt()
+        number2 += lastNumber * st
         count2--
-        number1 /= 10
+        st *= 10
     }
-    return number2.toInt()
+    return number2
 }
 
 /**
@@ -287,7 +291,7 @@ fun squareSequenceDigit(n: Int): Int {
         digit = count * count
     }
     number -= n
-    return (digit / Math.pow(10.0, number.toDouble()).toInt()) % 10
+    return rez(digit, number)
 }
 
 
@@ -310,8 +314,9 @@ fun fibSequenceDigit(n: Int): Int {
         digit = fib(count)
     }
     number -= n
-    return (digit / Math.pow(10.0, number.toDouble()).toInt()) % 10
+    return rez(digit, number)
 }
+
 
 fun NOD(m: Int, n: Int): Int {
     var numberm = m
@@ -323,3 +328,6 @@ fun NOD(m: Int, n: Int): Int {
     }
     return numbern
 }
+
+fun rez(n: Int, m: Int): Int =
+        (n / Math.pow(10.0, m.toDouble()).toInt()) % 10

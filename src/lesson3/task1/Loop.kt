@@ -224,20 +224,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    val count: Int = digitNumber(n)
+    var number = n
     var lastNumber: Int
-    var number1 = n
-    var number2 = 0
-    var count2 = count - 1
-    var st = 1
-    for (i in 1..count) {
-        lastNumber = number1 / Math.pow(10.0, count2.toDouble()).toInt()
-        number1 %= Math.pow(10.0, count2.toDouble()).toInt()
-        number2 += lastNumber * st
-        count2--
-        st *= 10
+    var rez = 0
+    var count = digitNumber(n) - 1
+    while (number > 0) {
+        lastNumber = number % 10
+        rez += lastNumber * Math.pow(10.0, count.toDouble()).toInt()
+        count--
+        number /= 10
     }
-    return number2
+    return rez
 }
 
 /**

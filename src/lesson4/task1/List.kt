@@ -318,19 +318,22 @@ fun russian(n: Int): String {
     }
     if (count > 2) {
         bignum = threeDigitToRussian(n / 1000, number1, count, position)
-        bignum.add(
-                when (number1[3]) {
-                    1 -> "тысяча"
-                    2, 3 -> "тысячи"
-                    else -> "тысяч"
-                })
+        if (n / 1000 % 100 in 10..19)
+            bignum.add("тысяч")
+        else
+            bignum.add(
+                    when (number1[3]) {
+                        1 -> "тысяча"
+                        2, 3, 4 -> "тысячи"
+                        else -> "тысяч"
+                    }
+            )
         count = 2
     }
     position = "right"
     val rightDigits = threeDigitToRussian(n % 1000, number1, count, position)
     return (bignum + rightDigits).filter { it != " " }.joinToString(separator = " ")
 }
-
 
 
 fun threeDigitToRussian(n: Int, number: List<Int>, count: Int, position: String): MutableList<String> {

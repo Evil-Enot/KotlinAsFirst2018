@@ -2,6 +2,7 @@
 
 package lesson4.task1
 
+import kotlinx.html.InputType
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
 
@@ -205,7 +206,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var number = n
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var del = 2
     while (number > 1)
         if (number % del == 0) {
@@ -234,7 +235,7 @@ fun factorizeToString(n: Int): String =
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var number = n
     if (n == 0)
         return listOf(0)
@@ -255,7 +256,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String =TODO()
+fun convertToString(n: Int, base: Int): String = TODO()
 
 
 /**
@@ -304,4 +305,109 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var number = n
+    var count = -1
+    val number1 = mutableListOf<Int>()
+    var bignum = mutableListOf<String>()
+    var position = "left"
+    for (i in 1..n.toString().length) {
+        number1.add(number % 10)
+        number /= 10
+        count++
+    }
+    if (count > 2) {
+        bignum = threeDigitToRussian(n / 1000, number1, count, position)
+        bignum.add(
+                when (number1[3]) {
+                    1 -> "тысяча"
+                    2, 3, 4 -> "тысячи"
+                    else -> "тысяч"
+                })
+        count = 2
+    }
+    position = "right"
+    val rightDigits = threeDigitToRussian(n % 1000, number1, count, position)
+    return (bignum + rightDigits).filter { it != " " }.joinToString(separator = " ")
+}
+
+
+
+fun threeDigitToRussian(n: Int, number: List<Int>, count: Int, position: String): MutableList<String> {
+    val result = mutableListOf<String>()
+    var i = count
+    if (i == 2 || i == 5) {
+        result.add(
+                when (number[i]) {
+                    1 -> "сто"
+                    2 -> "двести"
+                    3 -> "триста"
+                    4 -> "четыреста"
+                    5 -> "пятьсот"
+                    6 -> "шестьсот"
+                    7 -> "семьсот"
+                    8 -> "восемьсот"
+                    9 -> "девятьсот"
+                    else -> " "
+                })
+        i--
+    }
+    if (n % 100 in 10..19 && (i == 1 || i == 4)) {
+        result.add(
+                when (n % 100) {
+                    10 -> "десять"
+                    11 -> "одиннадцать"
+                    12 -> "двенадцать"
+                    13 -> "тринадцать"
+                    14 -> "четырнадцать"
+                    15 -> "пятнадцать"
+                    16 -> "шестнадцать"
+                    17 -> "семнадцать"
+                    18 -> "восемнадцать"
+                    19 -> "девятнадцать"
+                    else -> " "
+                })
+    } else {
+        if (i == 1 || i == 4) {
+            result.add(
+                    when (number[i]) {
+                        2 -> "двадцать"
+                        3 -> "тридцать"
+                        4 -> "сорок"
+                        5 -> "пятьдесят"
+                        6 -> "шестьдесят"
+                        7 -> "семьдесят"
+                        8 -> "восемьдесят"
+                        9 -> "девяносто"
+                        else -> " "
+                    })
+            i--
+        }
+        if (position == "left")
+            result.add(
+                    when (number[i]) {
+                        1 -> "одна"
+                        2 -> "две"
+                        else -> " "
+                    })
+        else
+            result.add(
+                    when (number[i]) {
+                        1 -> "один"
+                        2 -> "два"
+                        else -> " "
+                    })
+        result.add(
+                when (number[i]) {
+                    3 -> "три"
+                    4 -> "четыре"
+                    5 -> "пять"
+                    6 -> "шесть"
+                    7 -> "семь"
+                    8 -> "восемь"
+                    9 -> "девять"
+                    else -> " "
+                })
+    }
+    return result
+}

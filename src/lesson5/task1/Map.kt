@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import javax.print.attribute.standard.MediaSizeName.A
+import kotlin.math.max
+
 /**
  * Пример
  *
@@ -94,7 +97,18 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(
+        mapA: Map<String, String>,
+        mapB: Map<String, String>): Map<String, String> {
+    val mapC = mapA.toMutableMap()
+    for ((key, value) in mapB) {
+        if (mapA.containsKey(key)) {
+            if (!mapA.containsValue(value))
+                mapC[key] = "${mapA[key]}, $value"
+        } else mapC[key] = value
+    }
+    return mapC
+}
 
 /**
  * Простая
@@ -106,7 +120,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val rez = mutableMapOf<Int, MutableList<String>>()
+    for ((name, grade) in grades) {
+        if (rez[grade] == null)
+            rez[grade] = mutableListOf(name)
+        else rez[grade]!!.add(name)
+    }
+    return rez
+}
 
 /**
  * Простая
@@ -118,7 +140,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in b)
+        return (a.containsKey(key) == b.containsKey(key)) && ((a.containsValue(value) == b.containsValue(value)))
+    return true
+}
+
 
 /**
  * Средняя
@@ -130,7 +157,23 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val st = mutableMapOf<String, Double>()
+    val stCount = mutableMapOf<String, Int>()
+    for ((a, b) in stockPrices)
+        if (a !in st) {
+            st[a] = b
+            stCount[a] = 1
+        } else {
+            st[a] = st[a]!! + b
+            stCount[a] = stCount[a]!! + 1
+        }
+    for ((a, b) in st)
+        if (a in stCount)
+            st[a] = st[a]!! / stCount[a]!!
+    return st.toMap()
+}
+
 
 /**
  * Средняя
@@ -272,4 +315,38 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var answer = setOf<String>()
+    val countTreas = treasures.size + 1
+    val countBag = capacity + 1
+    val price: Array<Array<Int>> = Array(countTreas) { Array(countBag) { 0 } }
+    var weight: Int
+    var price1: Int
+    for (i in 0 until countTreas)
+        price[i][0] = 0
+    for (i in 0 until countBag)
+        price[0][i] = 0
+    for (i in 1 until countTreas) {
+        for (j in 1 until countBag) {
+            weight = treasures.values.toList()[i - 1].first
+            price1 = treasures.values.toList()[i - 1].second
+            price[i][j] =
+                    if (weight <= j)
+                        max(price[i - 1][j], price[i - 1][j - weight] + price1)
+                    else
+                        price[i - 1][j]
+        }
+    }
+    fun findAns(k: Int, s: Int) {
+        if (price[k][s] == 0)
+            return
+        if (price[k - 1][s] == price[k][s])
+            findAns(k - 1, s)
+        else {
+            findAns(k - 1, s - treasures.values.toList()[k - 1].first)
+            answer += treasures.keys.toList()[k - 1]
+        }
+    }
+    findAns(countTreas - 1, countBag - 1)
+    return answer
+}

@@ -227,11 +227,11 @@ fun revert(n: Int): Int {
     var number = n
     var lastNumber: Int
     var rez = 0
-    var count = digitNumber(n) - 1
+    var count = Math.pow(10.0, (digitNumber(n) - 1).toDouble()).toInt()
     while (number > 0) {
         lastNumber = number % 10
-        rez += lastNumber * Math.pow(10.0, count.toDouble()).toInt()
-        count--
+        rez += lastNumber * count
+        count /= 10
         number /= 10
     }
     return rez

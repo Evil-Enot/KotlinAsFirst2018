@@ -116,12 +116,11 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
+fun abs(v: List<Double>): Double{
     var number = 0.0
     for (i in v)
         number += Math.pow(i, 2.0)
     return sqrt(number)
-
 }
 
 /**
@@ -161,7 +160,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
     for (i in 0 until a.size)
         c += a[i] * b[i]
-    return (c)
+    return c
 }
 
 /**
@@ -174,9 +173,8 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var number = 0.0
-    if (p.isNotEmpty())
-        for (i in 0 until p.size)
-            number += p[i] * Math.pow(x, i.toDouble())
+    for (i in 0 until p.size)
+        number += p[i] * Math.pow(x, i.toDouble())
     return number
 }
 
@@ -191,9 +189,8 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isNotEmpty())
-        for (i in 1 until list.size)
-            list[i] += list[i - 1]
+    for (i in 1 until list.size)
+        list[i] += list[i - 1]
     return list
 }
 

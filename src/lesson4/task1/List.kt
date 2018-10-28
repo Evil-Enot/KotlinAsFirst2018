@@ -321,7 +321,7 @@ fun russian(n: Int): String {
         bignum.add(
                 when (number1[3]) {
                     1 -> "тысяча"
-                    2, 3, 4 -> "тысячи"
+                    2, 3 -> "тысячи"
                     else -> "тысяч"
                 })
         count = 2

@@ -101,12 +101,8 @@ fun mergePhoneBooks(
         mapA: Map<String, String>,
         mapB: Map<String, String>): Map<String, String> {
     val mapC = mapA.toMutableMap()
-    for ((key, value) in mapB) {
-        if (mapA.containsKey(key)) {
-            if (!mapA.containsValue(value))
-                mapC[key] = "${mapA[key]}, $value"
-        } else mapC[key] = value
-    }
+    for ((key, value) in mapB)
+        mapC.merge(key, value) { Key, Value -> if (Key == Value) Key else "$Key, $Value" }
     return mapC
 }
 
@@ -121,12 +117,9 @@ fun mergePhoneBooks(
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val rez = mutableMapOf<Int, MutableList<String>>()
-    for ((name, grade) in grades) {
-        if (rez[grade] == null)
-            rez[grade] = mutableListOf(name)
-        else rez[grade]!!.add(name)
-    }
+    val rez = mutableMapOf<Int, List<String>>()
+    for ((name, grade) in grades)
+        rez[grade] = rez.getOrPut(grade, ::emptyList).plus(name).sortedDescending()
     return rez
 }
 
@@ -141,8 +134,9 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    for ((key, value) in b)
-        return (a.containsKey(key) == b.containsKey(key)) && ((a.containsValue(value) == b.containsValue(value)))
+    for ((key, value) in a)
+        if (b[key] != value)
+            return false
     return true
 }
 
@@ -160,18 +154,12 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val st = mutableMapOf<String, Double>()
     val stCount = mutableMapOf<String, Int>()
-    for ((a, b) in stockPrices)
-        if (a !in st) {
-            st[a] = b
-            stCount[a] = 1
-        } else {
-            st[a] = st[a]!! + b
-            stCount[a] = stCount[a]!! + 1
-        }
-    for ((a, b) in st)
-        if (a in stCount)
-            st[a] = st[a]!! / stCount[a]!!
-    return st.toMap()
+    for ((a, b) in stockPrices) {
+        st.merge(a, b) { K, V -> K + V }
+        stCount.merge(a, 1) { K, _ -> K + 1 }
+    }
+    st.map { (key, _) -> st[key] = st[key]!! / stCount[key]!! }
+    return st
 }
 
 

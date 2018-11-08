@@ -116,12 +116,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double{
-    var number = 0.0
-    for (i in v)
-        number += Math.pow(i, 2.0)
-    return sqrt(number)
-}
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая
@@ -173,8 +168,11 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var number = 0.0
-    for (i in 0 until p.size)
-        number += p[i] * Math.pow(x, i.toDouble())
+    var sk =Math.pow(x, 0.0)
+    for (i in 0 until p.size) {
+        number += p[i] * sk
+        sk *= x
+    }
     return number
 }
 
@@ -264,11 +262,11 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var size = digits.size
     var count = 0
+    var st = Math.pow(base.toDouble(), (digits.size - 1).toDouble()).toInt()
     for (i in digits) {
-        size--
-        count += i * Math.pow(base.toDouble(), size.toDouble()).toInt()
+        count += i * st
+        st /= base
     }
     return count
 }

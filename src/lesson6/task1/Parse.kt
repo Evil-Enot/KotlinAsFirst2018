@@ -183,23 +183,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int {
-    val parts = expression.split(" ")
-    var rez = parts[0].toInt()
-    Regex("""^\d+( [-+] \d+)*$""").find(expression)
-            ?: throw IllegalArgumentException()
-    if (parts.size % 2 == 0)
-        throw IllegalArgumentException()
-    for (i in 1 until parts.size step 2) {
-        Regex("""\d+""").find(parts[i + 1])
-                ?: throw IllegalArgumentException()
-        when (parts[i]) {
-            "-" -> rez -= parts[i + 1].toInt()
-            "+" -> rez += parts[i + 1].toInt()
-        }
-    }
-    return rez
-}
+fun plusMinus(expression: String): Int = TODO()
 
 /**
  * Сложная
@@ -323,6 +307,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '[' -> {
                 if (res[pos] == 0) {
                     while (findPair >= 0) {
+                        if (count >= commands.length - 1)
+                            throw IllegalStateException()
                         count++
                         if (commands[count] == '[')
                             findPair++
@@ -335,6 +321,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ']' -> {
                 if (res[pos] != 0) {
                     while (findPair >= 0) {
+                        if (count < 0)
+                            throw IllegalStateException()
                         count--
                         if (commands[count] == ']')
                             findPair++

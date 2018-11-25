@@ -107,27 +107,25 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val rez = Regex("""^[\d]+[.][\d]+[.][\d]""").find(digital)
-    val parts = digital.split(".")
-    val mec: String
-    if ((parts.size > 3) || (rez == null))
+    val mec = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+            "сентября", "октября", "ноября", "декабря")
+    val month: String
+    val numb: List<Int>
+    try {
+        numb = digital
+                .split(".")
+                .map { it.toInt() }
+    } catch (e: NumberFormatException) {
         return ""
-    mec = when (parts[1]) {
-        "01" -> "января"
-        "02" -> "февраля"
-        "03" -> "марта"
-        "04" -> "апреля"
-        "05" -> "мая"
-        "06" -> "июня"
-        "07" -> "июля"
-        "08" -> "августа"
-        "09" -> "сентября"
-        "10" -> "октября"
-        "11" -> "ноября"
-        "12" -> "декабря"
-        else -> return ""
     }
-    return "${parts[0].toInt()} $mec ${parts[2].toInt()}"
+    try {
+        if ((numb.size != 3) || (numb[1] !in 1..12) || (numb[0] !in 1..daysInMonth(numb[1], numb[2])))
+            throw Exception()
+        month = mec[numb[1] - 1]
+    } catch (e: Exception) {
+        return ""
+    }
+    return String.format("%d %s %d", numb[0], month, numb[2])
 }
 
 /**

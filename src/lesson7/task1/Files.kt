@@ -106,6 +106,7 @@ fun centerFile(inputName: String, outputName: String) {
     var max = Int.MIN_VALUE
     var length: Int
     var dist: Int
+
     for (i in newFile) {
         if (max < i.length) {
             max = i.length

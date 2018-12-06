@@ -71,28 +71,24 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+
+
 fun dateStrToDigit(str: String): String {
+    if (str.contains(Regex("""[^\s\d|а-я]""")))
+        return ""
+    val mouth: Int
     val parts = str.split(" ")
-    var mo = 0
-    Regex("""^[\d]+[ ].+[ ][\d]""").find(str)
-            ?: return ""
-    when (parts[1]) {
-        "января" -> if (daysInMonth(1, parts[2].toInt()) >= parts[0].toInt()) mo = 1
-        "февраля" -> if (daysInMonth(2, parts[2].toInt()) >= parts[0].toInt()) mo = 2
-        "марта" -> if (daysInMonth(3, parts[2].toInt()) >= parts[0].toInt()) mo = 3
-        "апреля" -> if (daysInMonth(4, parts[2].toInt()) >= parts[0].toInt()) mo = 4
-        "мая" -> if (daysInMonth(5, parts[2].toInt()) >= parts[0].toInt()) mo = 5
-        "июня" -> if (daysInMonth(6, parts[2].toInt()) >= parts[0].toInt()) mo = 6
-        "июля" -> if (daysInMonth(7, parts[2].toInt()) >= parts[0].toInt()) mo = 7
-        "августа" -> if (daysInMonth(8, parts[2].toInt()) >= parts[0].toInt()) mo = 8
-        "сентября" -> if (daysInMonth(9, parts[2].toInt()) >= parts[0].toInt()) mo = 9
-        "октября" -> if (daysInMonth(10, parts[2].toInt()) >= parts[0].toInt()) mo = 10
-        "ноября" -> if (daysInMonth(11, parts[2].toInt()) >= parts[0].toInt()) mo = 11
-        "декабря" -> if (daysInMonth(12, parts[2].toInt()) >= parts[0].toInt()) mo = 12
-    }
-    return if (mo == 0)
-        ""
-    else "${twoDigitStr(parts[0].toInt())}.${twoDigitStr(mo)}.${parts[2].toInt()}"
+    val mec = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+            "сентября", "октября", "ноября", "декабря")
+    if ((parts.size != 3))
+        return ""
+    if (parts[1] in mec) {
+        mouth = mec.indexOf(parts[1]) + 1
+    } else return ""
+    val days = daysInMonth(mouth, parts[2].toInt())
+    return if (parts[0].toInt() in 1..days)
+        String.format("%02d.%02d.%d", parts[0].toInt(), mouth, parts[2].toInt())
+    else ""
 }
 
 
@@ -107,26 +103,23 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val mec = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
-            "сентября", "октября", "ноября", "декабря")
-    val month: String
-    val numb: List<Int>
-    try {
-        numb = digital
-                .split(".")
-                .map { it.toInt() }
-    } catch (e: NumberFormatException) {
+    if (digital.contains(Regex("""[^\d.]""")))
         return ""
-    }
-    try {
-        if ((numb.size != 3) || (numb[1] !in 1..12) || (numb[0] !in 1..daysInMonth(numb[1], numb[2])))
-            throw Exception()
-        month = mec[numb[1] - 1]
-    } catch (e: Exception) {
+    val parts = digital.split(".")
+    val mec = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+            "октября", "ноября", "декабря")
+    if ((parts.size != 3))
         return ""
-    }
-    return String.format("%d %s %d", numb[0], month, numb[2])
+    if (parts[1].toInt() !in 1..mec.size)
+        return ""
+    val month = mec[parts[1].toInt() - 1]
+    val mon = daysInMonth(parts[1].toInt(), parts[2].toInt())
+    return if (mon > parts[0].toInt())
+        "${parts[0].toInt()} $month ${parts[2].toInt()}"
+    else ""
+
 }
+
 
 /**
  * Средняя
@@ -142,8 +135,11 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val rez = phone.filter { !" -+()".contains(it) }
-    Regex("""^([\d+]*\d+[\d+]*)?[+]*(\([\d+]*\d+[\d+]*\))?[-()\d+ ]+$""").find(phone)
-            ?: return ""
+    if (phone.contains(Regex("""
+    [^+|\-\s\d|(|)]
+    """.trimIndent()))) {
+        return ""
+    }
     return if (phone[0].toString() == "+")
         "+$rez"
     else rez
@@ -200,7 +196,7 @@ fun firstDuplicateIndex(str: String): Int {
     if (parts.size == 1) return -1
     for (i in 0 until parts.size - 1) {
         if (parts[i] == parts[i + 1]) return rep
-        else rep += parts[i].toList().size + 1
+        else rep += parts[i].length + 1
     }
     return -1
 }
@@ -220,14 +216,20 @@ fun mostExpensive(description: String): String {
     var prod = ""
     var cen = 0.0
     val parts = description.split(" ")
-    if (parts.size % 2 != 0)
-        return ""
-    for (i in 0 until parts.size step 2) {
-        val cenTov = parts[i + 1].filter { it != ';' }.toDouble()
-        if (cenTov >= cen) {
-            cen = cenTov
-            prod = parts[i]
+    try {
+        if (parts.size % 2 != 0)
+            return ""
+        for (i in 0 until parts.size step 2) {
+            val cenTov = parts[i + 1]
+                    .filter { it != ';' }
+                    .toDouble()
+            if (cenTov >= cen) {
+                cen = cenTov
+                prod = parts[i]
+            }
         }
+    } catch (e: NumberFormatException) {
+        prod = ""
     }
     return prod
 }
@@ -291,10 +293,12 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (!commands.contains(Regex("""\+|-|>|<|\[|]|\s""")))
             throw IllegalArgumentException()
     commands.forEach {
-        when (it) {
-            '[' -> findPair++
-            ']' -> findPair--
-        }
+        if (findPair >= 0)
+            when (it) {
+                '[' -> findPair++
+                ']' -> findPair--
+            }
+        else throw IllegalArgumentException()
     }
     if (findPair != 0)
         throw IllegalArgumentException()

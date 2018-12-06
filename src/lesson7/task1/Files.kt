@@ -103,9 +103,11 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     val newFile = File(inputName).readLines()
     val endFile = File(outputName).bufferedWriter()
-    var max = Int.MIN_VALUE
     var length: Int
     var dist: Int
+    val maxLength = newFile.maxBy { it.length }
+            ?: ""
+    var max = maxLength.length
 
     for (i in newFile) {
         if (max < i.length) {
@@ -113,7 +115,9 @@ fun centerFile(inputName: String, outputName: String) {
         }
     }
     for (i in newFile) {
-        length = i.trim().length
+        length = i
+                .trim()
+                .length
         if (length == max)
             endFile.write(i)
         else {

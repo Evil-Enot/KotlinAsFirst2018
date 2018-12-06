@@ -188,6 +188,7 @@ fun lineBySegment(s: Segment): Line {
     when {
         angle == PI -> angle -= PI
         angle < 0 -> angle += PI
+        else -> IllegalArgumentException()
     }
     return Line(s.begin, angle)
 }

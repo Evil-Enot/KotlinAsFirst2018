@@ -114,7 +114,7 @@ fun dateDigitToStr(digital: String): String {
         return ""
     val month = mec[parts[1].toInt() - 1]
     val mon = daysInMonth(parts[1].toInt(), parts[2].toInt())
-    return if (mon > parts[0].toInt())
+    return if (mon >= parts[0].toInt())
         "${parts[0].toInt()} $month ${parts[2].toInt()}"
     else ""
 
@@ -134,12 +134,12 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val rez = phone.filter { !" -+()".contains(it) }
-    if (phone.contains(Regex("""
-    [^+|\-\s\d|(|)]
-    """.trimIndent()))) {
+    if (phone.contains(Regex("""[^+\-\s\d()]"""))) {
         return ""
     }
+    val rez = phone.filterNot { " -+()".contains(it) }
+    if (phone == "\n")
+        return ""
     return if (phone[0].toString() == "+")
         "+$rez"
     else rez

@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "UNUSED_EXPRESSION")
 
 package lesson8.task1
 
@@ -184,10 +184,11 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line {
-    var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
+    val angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     when {
-        angle == PI -> angle -= PI
-        angle < 0 -> angle += PI
+        angle >= PI -> angle - PI
+        angle >= 0 -> angle
+        angle < 0 -> angle + PI
         else -> IllegalArgumentException()
     }
     return Line(s.begin, angle)

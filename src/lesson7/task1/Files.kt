@@ -107,13 +107,7 @@ fun centerFile(inputName: String, outputName: String) {
     var dist: Int
     val maxLength = newFile.maxBy { it.length }
             ?: ""
-    var max = maxLength.length
-
-    for (i in newFile) {
-        if (max < i.length) {
-            max = i.length
-        }
-    }
+    val max = maxLength.length
     for (i in newFile) {
         length = i
                 .trim()

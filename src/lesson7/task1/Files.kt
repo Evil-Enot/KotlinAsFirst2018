@@ -103,19 +103,15 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     val newFile = File(inputName).readLines()
     val endFile = File(outputName).bufferedWriter()
-    var length: Int
-    var dist: Int
-    val maxLength = newFile.maxBy { it.length }
+    val maxLength = newFile.maxBy { it.trim().length }
             ?: ""
-    val max = maxLength.length
+    val max = maxLength.trim().length
     for (i in newFile) {
-        length = i
-                .trim()
-                .length
+        val length = i.trim().length
         if (length == max)
             endFile.write(i)
         else {
-            dist = (max - length) / 2
+            val dist = (max - length) / 2
             endFile.write((" ".repeat(dist)) + i.trim())
         }
         endFile.newLine()
@@ -310,66 +306,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val newFile = File(inputName).readLines()
-    val endFile = File(outputName).bufferedWriter()
-    var result = listOf<String>()
-    //Замена на теги всех абрацев текста
-    for (i in newFile) {
-        result += if (i.isNotEmpty())
-            i
-        else
-            "</p><p>"
-    }
-    endFile.write("<html><body><p>" + change(result.joinToString(" ")) + "</p></body></html>")
-    endFile.close()
-}
-
-//Замена всей разметки на тэги
-fun change(res: String): String {
-    var result = ""
-    var i = 0
-    var italicSt = false
-    var boldSt = false
-    var strikeSt = false
-    while (i <= res.length - 1) {
-        when {
-            (res[i] == '*') && (res[i + 1] == '*') -> {
-                if (boldSt) {
-                    result += "</b>"
-                    boldSt = false
-                } else {
-                    result += "<b>"
-                    boldSt = true
-                }
-                i += 2
-            }
-            (res[i] == '~') && (res[i + 1] == '~') -> {
-                if (strikeSt) {
-                    result += "</s>"
-                    strikeSt = false
-                } else {
-                    result += "<s>"
-                    strikeSt = true
-                }
-                i += 2
-            }
-            (res[i] == '*') -> {
-                if (italicSt) {
-                    result += "</i>"
-                    italicSt = false
-                } else {
-                    result += "<i>"
-                    italicSt = true
-                }
-                i++
-            }
-            else -> {
-                result += res[i]
-                i++
-            }
-        }
-    }
-    return result
+    TODO()
 }
 
 

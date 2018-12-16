@@ -138,7 +138,7 @@ fun flattenPhoneNumber(phone: String): String {
         return ""
     }
     val rez = phone.filterNot { " -+()".contains(it) }
-    if (phone == "\n")
+    if ((phone == "\n") || (phone.isEmpty()))
         return ""
     return if (phone[0].toString() == "+")
         "+$rez"
@@ -289,35 +289,34 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var max = 0
     var findPair = 0
     var pos = cells / 2
-    if (commands.isNotEmpty())
-        if (!commands.contains(Regex("""\+|-|>|<|\[|]|\s""")))
-            throw IllegalArgumentException()
+    if (commands.isNotEmpty() && commands.contains(Regex("""[^+\-><\[\]\s]""")))
+        throw IllegalArgumentException()
     commands.forEach {
         if (findPair >= 0)
             when (it) {
                 '[' -> findPair++
                 ']' -> findPair--
             }
-        else throw IllegalArgumentException()
+        else
+            throw IllegalArgumentException()
     }
     if (findPair != 0)
         throw IllegalArgumentException()
     for (i in 0 until cells)
         res.add(i, 0)
-    while ((limit > max) && (commands.length > count)) {
-        if (pos !in 0 until cells)
-            throw IllegalStateException()
+    while (commands.length > count && limit > max) {
         when (commands[count]) {
+            ' ' -> {/*NOTHING*/}
             '[' -> {
                 if (res[pos] == 0) {
                     while (findPair >= 0) {
                         if (count >= commands.length - 1)
-                            throw IllegalStateException()
+                            throw IllegalArgumentException()
                         count++
-                        if (commands[count] == '[')
-                            findPair++
                         if (commands[count] == ']')
                             findPair--
+                        if (commands[count] == '[')
+                            findPair++
                     }
                     findPair = 0
                 }
@@ -325,26 +324,28 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ']' -> {
                 if (res[pos] != 0) {
                     while (findPair >= 0) {
-                        if (count < 0)
-                            throw IllegalStateException()
+                        if (count <= 0)
+                            throw IllegalArgumentException()
                         count--
-                        if (commands[count] == ']')
-                            findPair++
                         if (commands[count] == '[')
                             findPair--
+
+                        if (commands[count] == ']')
+                            findPair++
                     }
                     findPair = 0
                 }
             }
+            '>' -> pos++
+            '<' -> pos--
             '+' -> res[pos]++
             '-' -> res[pos]--
-            '<' -> pos--
-            '>' -> pos++
-            ' ' -> pos
             else -> throw IllegalArgumentException()
         }
-        max++
+        if (pos !in 0 until cells)
+            throw IllegalStateException()
         count++
+        max++
     }
     return res
 }

@@ -305,6 +305,8 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String): Unit = TODO()
+
+
 /*   val newFile = File(inputName).readLines()
 val endFile = File(outputName).bufferedWriter()
 var result = listOf<String>()

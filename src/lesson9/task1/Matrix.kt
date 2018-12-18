@@ -94,6 +94,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
         result = 31 * result + array.hashCode()
         return result
     }
+
 }
 
 

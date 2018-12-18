@@ -304,67 +304,66 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    /*   val newFile = File(inputName).readLines()
-    val endFile = File(outputName).bufferedWriter()
-    var result = listOf<String>()
-    //Замена на теги всех абрацев текста
-    for (i in newFile) {
-        result += if (i.isNotEmpty())
-            i
-        else
-            "</p><p>"
-    }
-    endFile.write("<html><body><p>" + change(result.joinToString(" ")) + "</p></body></html>")
-    endFile.close()
+fun markdownToHtmlSimple(inputName: String, outputName: String): Unit = TODO()
+/*   val newFile = File(inputName).readLines()
+val endFile = File(outputName).bufferedWriter()
+var result = listOf<String>()
+//Замена на теги всех абрацев текста
+for (i in newFile) {
+    result += if (i.isNotEmpty())
+        i
+    else
+        "</p><p>"
+}
+endFile.write("<html><body><p>" + change(result.joinToString(" ")) + "</p></body></html>")
+endFile.close()
 }
 //Замена всей разметки на тэги
 fun change(res: String): String {
-    var result = ""
-    var i = 0
-    var italicSt = false
-    var boldSt = false
-    var strikeSt = false
-    while (i <= res.length - 1) {
-        when {
-            (res[i] == '*') && (res[i + 1] == '*') -> {
-                if (boldSt) {
-                    result += "</b>"
-                    boldSt = false
-                } else {
-                    result += "<b>"
-                    boldSt = true
-                }
-                i += 2
+var result = ""
+var i = 0
+var italicSt = false
+var boldSt = false
+var strikeSt = false
+while (i <= res.length - 1) {
+    when {
+        (res[i] == '*') && (res[i + 1] == '*') -> {
+            if (boldSt) {
+                result += "</b>"
+                boldSt = false
+            } else {
+                result += "<b>"
+                boldSt = true
             }
-            (res[i] == '~') && (res[i + 1] == '~') -> {
-                if (strikeSt) {
-                    result += "</s>"
-                    strikeSt = false
-                } else {
-                    result += "<s>"
-                    strikeSt = true
-                }
-                i += 2
+            i += 2
+        }
+        (res[i] == '~') && (res[i + 1] == '~') -> {
+            if (strikeSt) {
+                result += "</s>"
+                strikeSt = false
+            } else {
+                result += "<s>"
+                strikeSt = true
             }
-            (res[i] == '*') -> {
-                if (italicSt) {
-                    result += "</i>"
-                    italicSt = false
-                } else {
-                    result += "<i>"
-                    italicSt = true
-                }
-                i++
+            i += 2
+        }
+        (res[i] == '*') -> {
+            if (italicSt) {
+                result += "</i>"
+                italicSt = false
+            } else {
+                result += "<i>"
+                italicSt = true
             }
-            else -> {
-                result += res[i]
-                i++
-            }
+            i++
+        }
+        else -> {
+            result += res[i]
+            i++
         }
     }
-    return result */
 }
+return result */
 
 
 /**
